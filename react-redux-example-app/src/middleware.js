@@ -1,3 +1,6 @@
+/*global undefinedVariable:false Raven:false*/
+/*eslint no-unused-vars:0 no-eval:0*/
+
 import agent from './agent';
 import {
   ASYNC_START,
@@ -31,7 +34,10 @@ const promiseMiddleware = store => next => action => {
         if (!skipTracking && currentState.viewChangeCounter !== currentView) {
           return
         }
+
         console.log('ERROR', error);
+        Raven.captureException(error);
+
         action.error = true;
         action.payload = error.response.body;
         if (!action.skipTracking) {
