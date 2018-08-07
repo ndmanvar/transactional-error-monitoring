@@ -1,3 +1,6 @@
+/*global undefinedVariable:false Raven:false*/
+/*eslint no-unused-vars:0 no-eval:0*/
+
 import superagentPromise from 'superagent-promise';
 import _superagent from 'superagent';
 
@@ -9,12 +12,26 @@ const API_ROOT_DUPLICATE = 'http://localhost:3000';
 const encode = encodeURIComponent;
 const responseBody = res => res.body;
 
+let transactionId = null;
+
 let token = null;
+
 const tokenPlugin = req => {
   if (token) {
     req.set('authorization', `Token ${token}`);
   }
-  req.set('transaction_id', '_' + Math.random().toString(36).substr(2, 9));
+    transactionId = '_' + Math.random().toString(36).substr(2, 9);
+    req.set('transactionId', transactionId);
+
+    Raven.setTagsContext({'lastTransactionId': transactionId});
+
+    Raven.captureBreadcrumb({
+        message: 'XHR about to occur',
+        category: 'xhr',
+        data: {
+            transactionId: transactionId
+        }
+    });
 }
 
 const requests = {
