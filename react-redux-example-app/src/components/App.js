@@ -1,6 +1,3 @@
-/*global undefinedVariable:false Raven:false*/
-/*eslint no-unused-vars:0 no-eval:0*/
-
 import agent from '../agent';
 import Header from './Header';
 import React from 'react';
@@ -28,9 +25,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onLoad: (payload, token) => {
-    if (payload.user && payload.user.email) {
-      Raven.setUserContext({email: payload.user.email});
-    }
     dispatch({ type: APP_LOAD, payload, token, skipTracking: true })
   },
   onRedirect: () =>
