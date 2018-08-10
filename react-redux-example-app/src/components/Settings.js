@@ -1,3 +1,6 @@
+/*global undefinedVariable:false Raven:false*/
+/*eslint no-unused-vars:0 no-eval:0*/
+
 import ListErrors from './ListErrors';
 import React from 'react';
 import agent from '../agent';
@@ -130,7 +133,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClickLogout: () => dispatch({ type: LOGOUT }),
+  onClickLogout: () => {
+    Raven.setUserContext({email: ''})
+    dispatch({ type: LOGOUT })
+  },
   onSubmitForm: user =>
     dispatch({ type: SETTINGS_SAVED, payload: agent.Auth.save(user) }),
   onUnload: () => dispatch({ type: SETTINGS_PAGE_UNLOADED })

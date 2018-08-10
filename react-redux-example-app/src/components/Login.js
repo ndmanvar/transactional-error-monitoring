@@ -1,3 +1,6 @@
+/*global undefinedVariable:false Raven:false*/
+/*eslint no-unused-vars:0 no-eval:0*/
+
 import { Link } from 'react-router-dom';
 import ListErrors from './ListErrors';
 import React from 'react';
@@ -16,8 +19,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: UPDATE_FIELD_AUTH, key: 'email', value }),
   onChangePassword: value =>
     dispatch({ type: UPDATE_FIELD_AUTH, key: 'password', value }),
-  onSubmit: (email, password) =>
-    dispatch({ type: LOGIN, payload: agent.Auth.login(email, password) }),
+  onSubmit: (email, password) => {
+    Raven.setUserContext({email})
+    dispatch({ type: LOGIN, payload: agent.Auth.login(email, password) })
+  },
+
+
   onUnload: () =>
     dispatch({ type: LOGIN_PAGE_UNLOADED })
 });

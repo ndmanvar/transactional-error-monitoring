@@ -12,7 +12,6 @@ const API_ROOT_DUPLICATE = 'http://localhost:3000';
 const encode = encodeURIComponent;
 const responseBody = res => res.body;
 
-let transactionId = null;
 
 let token = null;
 
@@ -20,7 +19,7 @@ const tokenPlugin = req => {
   if (token) {
     req.set('authorization', `Token ${token}`);
   }
-    transactionId = '_' + Math.random().toString(36).substr(2, 9);
+    const transactionId = '_' + Math.random().toString(36).substr(2, 9);
     req.set('transactionId', transactionId);
 
     Raven.setTagsContext({'lastTransactionId': transactionId});
