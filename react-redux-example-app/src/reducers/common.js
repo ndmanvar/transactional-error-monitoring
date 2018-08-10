@@ -1,3 +1,6 @@
+/*global undefinedVariable:false Raven:false*/
+/*eslint no-unused-vars:0 no-eval:0*/
+
 import {
   APP_LOAD,
   REDIRECT,
@@ -26,6 +29,10 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case APP_LOAD:
+      if (action.payload && action.payload.user)
+      Raven.setUserContext({
+        email: action.payload.user.email
+      });
       return {
         ...state,
         token: action.token || null,
